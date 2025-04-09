@@ -1,0 +1,54 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model CompanyProfile {
+  id        Int      @id @default(autoincrement())
+  name      String
+  vision    String
+  mission   String
+  logo      String?
+}
+
+model Service {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  icon        String?
+}
+
+model Team {
+  id       Int      @id @default(autoincrement())
+  name     String
+  position String
+  bio      String?
+  photo    String?
+}
+
+model Category {
+  id       Int      @id @default(autoincrement())
+  name     String
+  articles Article[]
+}
+
+model Article {
+  id          Int      @id @default(autoincrement())
+  title       String
+  content     String
+  publishedAt DateTime @default(now())
+  category    Category @relation(fields: [categoryId], references: [id])
+  categoryId  Int
+  image       String?
+}
+
+model User {
+  id       Int      @id @default(autoincrement())
+  email    String   @unique
+  password String
+  role     String   // "admin" atau "editor"
+}
